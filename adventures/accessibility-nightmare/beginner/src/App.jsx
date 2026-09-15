@@ -4,9 +4,9 @@ export default function App() {
             <header className="site-header">
                 <div className="logo">ShopSmart</div>
 
-                <div className="menu" onClick={() => alert('Menu opened')}>
+                <button type="button" className="menu" onClick={() => alert('Menu opened')}>
                     Menu
-                </div>
+                </button>
 
                 <nav className="nav-links">
                     <a href="#deals">Deals</a>
@@ -24,15 +24,15 @@ export default function App() {
                             Discover popular products at prices that are hard to ignore.
                         </p>
 
-                        <div
-                            className="primary-action"
+                        <button
+                            className="primary-action" 
                             onClick={() => alert('Shopping started')}
                         >
                             Start shopping
-                        </div>
+                        </button>
                     </div>
 
-                    <img src="/images/store.svg" />
+                    <img src="/images/store.svg" alt="Image of the Store"/>
                 </section>
 
                 <section id="products" className="products-section">
@@ -40,21 +40,21 @@ export default function App() {
 
                     <div className="product-grid">
                         <article className="product-card">
-                            <img src="/images/watch.svg" />
+                            <img src="/images/watch.svg" alt="Image of the Product Watch"/>
                             <h3>Smart watch</h3>
                             <p>Track your day with a clean, lightweight design.</p>
                             <button className="buy-button">Buy now</button>
                         </article>
 
                         <article className="product-card">
-                            <img src="/images/headphones.svg" />
+                            <img src="/images/headphones.svg" alt="Image of the Product Headphones"/>
                             <h3>Wireless headphones</h3>
                             <p>Comfortable sound for work, travel, and exercise.</p>
                             <button className="buy-button">Buy now</button>
                         </article>
 
                         <article className="product-card">
-                            <img src="/images/shoes.svg" />
+                            <img src="/images/shoes.svg" alt="Image of the Product Shoes"/>
                             <h3>Running shoes</h3>
                             <p>Flexible everyday shoes made for active routines.</p>
                             <button className="buy-button">Buy now</button>

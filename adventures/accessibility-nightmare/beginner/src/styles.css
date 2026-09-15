@@ -64,7 +64,7 @@ a,
 }
 
 .nav-links a {
-    color: #9c9ca8;
+    color: #000000;
 }
 
 .hero {
@@ -86,7 +86,7 @@ a,
 
 .eyebrow {
     margin: 0 0 0.75rem;
-    color: #d5a093;
+    color: #1A1A1A;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -101,7 +101,7 @@ h1 {
 
 .hero-copy {
     max-width: 52ch;
-    color: #b5a9a3;
+    color: #0E0E0E;
     font-size: 1.1rem;
     line-height: 1.7;
 }
@@ -112,7 +112,7 @@ h1 {
     padding: 0.9rem 1.4rem;
     border-radius: 0.65rem;
     background: #f0b4a5;
-    color: #ffffff;
+    color: #00363F;
     font-weight: 700;
 }
 
@@ -146,7 +146,7 @@ h1 {
 }
 
 .product-card p {
-    color: #a8a8b2;
+    color: #0E0E0E;
     line-height: 1.6;
 }
 
@@ -156,13 +156,13 @@ h1 {
     border: 0;
     border-radius: 0.6rem;
     background: #d8d8e2;
-    color: #ffffff;
+    color: #0E0E0E;
     font-weight: 700;
 }
 
 footer {
     padding: 2rem 5vw;
-    color: #aaaab4;
+    color: #0E0E0E;
     text-align: center;
 }
 
@@ -180,4 +180,9 @@ footer {
     .product-grid {
         grid-template-columns: 1fr;
     }
+}
+
+:focus-visible {
+  outline: 2px solid #0057d9;
+  outline-offset: 2px;
 }
