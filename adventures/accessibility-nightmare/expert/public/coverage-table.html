@@ -286,11 +286,6 @@ th[scope="row"] { font-weight: 600; font-size: 0.95rem; color: #2f2f2f; }
     white-space: nowrap;
 }
 
-/* The two halves of WCAG 2.4.2, one visible to the scanner and one not. */
-tr.is-paired th[scope="row"] { box-shadow: inset 4px 0 0 #a4402c; }
-tr.is-paired th[scope="row"],
-tr.is-paired td { background: #fdf4f1; }
-
 /* ── Verified-by-gate column ── */
 .verdict { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
 
@@ -503,7 +498,7 @@ const CHECKS = [
             { check: 'Form inputs have associated labels', note: 'for/id pairing or aria-labelledby', wcag: '1.3.1', axe: 'yes', kbd: 'no', sr: 'yes', rules: ['label', 'form-field-multiple-labels'] },
             { check: 'Images have descriptive alt text', note: 'Or alt="" when the image is decorative', wcag: '1.1.1', axe: 'yes', kbd: 'no', sr: 'yes', rules: ['image-alt'] },
             { check: 'Text contrast meets 4.5 : 1', note: '3 : 1 for large text and UI components', wcag: '1.4.3', axe: 'yes', kbd: 'no', sr: 'no', rules: ['color-contrast'] },
-            { check: 'The document has a title', note: 'The static half of 2.4.2 — a title exists in the markup', wcag: '2.4.2', axe: 'yes', kbd: 'no', sr: 'yes', rules: ['document-title'], paired: true },
+            { check: 'The document has a title', note: 'A title exists in the markup', wcag: '2.4.2', axe: 'yes', kbd: 'no', sr: 'yes', rules: ['document-title'] },
             { check: 'A skip mechanism bypasses repeated blocks', note: 'A skip link, or landmark structure to navigate by', wcag: '2.4.1', axe: 'yes', kbd: 'partial', sr: 'yes', rules: ['bypass'] },
             { check: 'Interactive targets meet minimum size', note: 'WCAG 2.2 — 24 by 24 CSS pixels', wcag: '2.5.8', axe: 'yes', kbd: 'no', sr: 'no', rules: ['target-size'] },
             { check: 'Text can be resized without loss', note: 'The viewport does not lock zoom', wcag: '1.4.4', axe: 'yes', kbd: 'no', sr: 'no', rules: ['meta-viewport'] },
@@ -523,8 +518,8 @@ const CHECKS = [
     {
         group: 'Assistive technology output — what the screen reader hears',
         rows: [
-            { check: 'Route change announces the new page', note: 'The behavioural half of 2.4.2 — no scanner can reach it', wcag: '2.4.2', axe: 'no', kbd: 'no', sr: 'yes', annotation: 'route-announcement', paired: true },
-            { check: 'Status messages use the right politeness', note: 'Polite for route changes, assertive only when urgent', wcag: '4.1.3', axe: 'no', kbd: 'no', sr: 'yes', annotation: 'status-politeness' },
+            { check: 'Content that changes without a page load is announced', note: 'Anything the user did not type that alters what is on screen', wcag: '4.1.3', axe: 'no', kbd: 'no', sr: 'yes', annotation: 'route-announcement' },
+            { check: 'Status messages use the right politeness', note: 'Polite by default, assertive only when genuinely urgent', wcag: '4.1.3', axe: 'no', kbd: 'no', sr: 'yes', annotation: 'status-politeness' },
             { check: 'Form errors are announced on submission', note: 'A live region, or focus moved to an error summary', wcag: '4.1.3', axe: 'partial', kbd: 'no', sr: 'yes' },
             { check: 'Widget state changes are announced', note: 'Dropdowns, dialogs and toggles report their state', wcag: '4.1.2', axe: 'partial', kbd: 'no', sr: 'yes' },
         ],
@@ -698,7 +693,6 @@ function renderTable(data) {
 
         for (const row of group.rows) {
             const tr = document.createElement('tr');
-            if (row.paired) tr.className = 'is-paired';
             tr.innerHTML = `
                 <th scope="row">${esc(row.check)}<span class="check-note">${esc(row.note)}</span></th>
                 <td><span class="wcag">${esc(row.wcag)}</span></td>

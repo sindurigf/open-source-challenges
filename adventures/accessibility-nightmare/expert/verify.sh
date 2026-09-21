@@ -141,7 +141,7 @@ fi
 # 4. Route transitions are announced --------------------------------------
 check_playwright_tests "@transition" \
   "The gate catches the navigation barrier that the scanner never reported" \
-  "Nothing here is wrong in the markup, so the scanner has nothing to report. Move through the app the way someone who cannot see it would, and pay attention to what arrives after the address changes."
+  "The markup is correct at every moment the scanner looks, so it has nothing to report. Move through the shop the way someone who cannot see it would, and judge whether you could still follow where you were."
 
 # 5. Compliance report documenting what was audited -----------------------
 

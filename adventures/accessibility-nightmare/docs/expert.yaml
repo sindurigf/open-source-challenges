@@ -65,11 +65,11 @@ what_you_learn:
   - >-
     Why automated scanners cannot detect faults that only exist when a user does something —
     and which tool bridges the gap.
-    ([WCAG 2.4.2: Page Titled](https://www.w3.org/WAI/WCAG22/Understanding/page-titled))
+    ([Test and Evaluate Accessibility](https://www.w3.org/WAI/test-evaluate/))
   - >-
     How a single-page application can silently break the navigation contract that assistive
     technology depends on, and what it takes to restore it.
-    ([WCAG 4.1.3: Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages))
+    ([WCAG 4.1: Compatible](https://www.w3.org/WAI/WCAG22/Understanding/compatible))
   - >-
     How a compliance report is evidence of conformance over time — what was tested, how
     it was tested, and that it passed.
@@ -160,9 +160,9 @@ how_to_play:
       <your-codespace>-5173.app.github.dev/?listen
       ```
 
-      Move through the page with Tab, then follow a link to another page. The panel
-      marks the address change with a dim `·` line. Read what arrives after that
-      marker, and what does not.
+      Move through the page with Tab, then follow a link to another page. Every
+      address change is marked with a dim `·` line, so you can tell what the reader
+      said before a navigation from what it said after one.
 
       The same simulation is available to your tests through the helpers in
       `tests/lib/screen-reader.js`.
@@ -220,7 +220,7 @@ how_to_play:
     content: |
       The check was green for months while nobody could move through the shop without
       sight. Two things made that possible: it never looked past the homepage, and the
-      tool it used cannot hear what the browser says out loud.
+      one tool it did run was the wrong instrument for what was broken.
 
       Every layer of a testing stack catches something the others miss, and a gate built
       on one layer reports the absence of the faults it can see. Which layer is missing
@@ -233,17 +233,12 @@ helpful_links:
       A reference table — served by the dev server — showing which checks each
       testing layer (axe-core, keyboard, screen reader) can and cannot detect,
       and which gate tag covers each one.
-  - title: "Understanding WCAG 2.4.2: Page Titled"
-    url: "https://www.w3.org/WAI/WCAG22/Understanding/page-titled"
+  - title: "How to Meet WCAG 2.2 (Quick Reference)"
+    url: "https://www.w3.org/WAI/WCAG22/quickref/"
     description: >-
-      Why every page in an application needs a title that describes its purpose,
-      and why this matters especially in single-page applications.
-  - title: "Understanding WCAG 4.1.3: Status Messages"
-    url: "https://www.w3.org/WAI/WCAG22/Understanding/status-messages"
-    description: >-
-      When content updates without a page reload, assistive technology needs a
-      programmatic signal before it will report the change. What counts as one,
-      and when the criterion applies.
+      Every success criterion, filterable by level and guideline. Your compliance
+      report has to name the ones your tests actually verify, so this is where you
+      work out which they are.
   - title: "Guidepup Virtual Screen Reader"
     url: "https://github.com/guidepup/virtual-screen-reader"
     description: >-
