@@ -577,8 +577,11 @@ function summarise(report) {
     let scanTotal = 0, scanFailed = 0;
 
     for (const spec of specs) {
-        const status = spec.tests?.[0]?.results?.[0]?.status ?? 'skipped';
-        const ok = status === 'passed';
+        // spec.ok is the outcome after retries; results[0] is only the
+        // first attempt, so a flaky-then-passing test would read as failed.
+        const attempts = spec.tests?.[0]?.results ?? [];
+        const status = attempts[attempts.length - 1]?.status ?? 'skipped';
+        const ok = spec.ok ?? (status === 'passed');
         if (ok) pass++;
         else if (status === 'skipped') skip++;
         else fail++;

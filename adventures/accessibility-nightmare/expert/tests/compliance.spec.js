@@ -11,7 +11,7 @@ import AxeBuilder from '@axe-core/playwright';
 //   4. Produce a report proving each customer journey step was audited and passes.
 //
 // Coverage reference — which checks each tool layer can and cannot detect:
-// http://localhost:5173/coverage-table.html
+// open /coverage-table.html on the storefront
 
 async function seriousViolations(page) {
     const results = await new AxeBuilder({ page })

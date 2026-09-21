@@ -43,17 +43,28 @@ check_playwright_tests_detect() {
   local display_name=$2
   local hint=$3
   local project_dir=${4:-.}
+  local status=0
 
   print_test_section "Checking ${display_name}..."
 
-  if (cd "${project_dir}" && npx playwright test --grep "${tag}" --reporter=line >/dev/null 2>&1); then
+  (cd "${project_dir}" && npx playwright test --grep "${tag}" --reporter=line >/dev/null 2>&1) || status=$?
+
+  # Playwright exits 1 when tests fail, which is the outcome this check wants.
+  # Anything else — no tests matched, a crash, a signal (130 for Ctrl-C) — says
+  # nothing about whether the fault was caught, so it must not read as success.
+  if [[ ${status} -eq 1 ]]; then
+    print_success_indent "${display_name}"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+  elif [[ ${status} -eq 0 ]]; then
     print_error_indent "${display_name}"
     print_hint "${hint}"
     TESTS_FAILED=$((TESTS_FAILED + 1))
     FAILED_CHECKS+=("playwright_detect:${tag#@}")
   else
-    print_success_indent "${display_name}"
-    TESTS_PASSED=$((TESTS_PASSED + 1))
+    print_error_indent "${display_name}"
+    print_hint "The test run ended with exit code ${status} rather than a test failure, so this check could not be measured. Run 'npx playwright test --grep \"${tag}\"' to see what happened."
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    FAILED_CHECKS+=("playwright_detect_error:${tag#@}")
   fi
 
   print_new_line

@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -10,11 +11,12 @@ function serveComplianceReport() {
         name: 'serve-compliance-report',
         apply: 'serve',
         configureServer(server) {
+            const root = server.config.root;
             server.middlewares.use('/compliance-report.json', async (_req, res) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.setHeader('Cache-Control', 'no-store');
                 try {
-                    res.end(await readFile('compliance-report.json', 'utf8'));
+                    res.end(await readFile(join(root, 'compliance-report.json'), 'utf8'));
                 } catch {
                     res.statusCode = 404;
                     res.end('{"error":"no report"}');
