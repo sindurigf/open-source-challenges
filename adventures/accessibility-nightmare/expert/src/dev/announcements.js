@@ -89,6 +89,7 @@ export async function start() {
     await virtual.start({ container: root });
 
     let shown = 0;
+    let markerPending = null;
 
     function append(text, style) {
         empty.remove();
@@ -99,9 +100,26 @@ export async function start() {
         list.scrollTop = list.scrollHeight;
     }
 
+    // Reading the log is asynchronous, so two overlapping calls would both slice
+    // from the same `shown` index and print the same phrases twice.
+    let draining = false;
+
     async function drain() {
+        if (draining) return;
+        draining = true;
+        try {
+            await flush();
+        } finally {
+            draining = false;
+        }
+    }
+
+    async function flush() {
         const log = await virtual.spokenPhraseLog();
-        if (log.length === shown) return;
+        if (log.length === shown) {
+            drainMarker();
+            return;
+        }
 
         for (const phrase of log.slice(shown)) {
             const isLive = /^(polite|assertive):/.test(phrase);
@@ -117,20 +135,34 @@ export async function start() {
             );
         }
         shown = log.length;
+        drainMarker();
     }
 
-    // Marks where the address changed, so what the reader said before a
-    // navigation can be told apart from what it said after one.
-    window.addEventListener('hashchange', async () => {
-        await drain();
+    // Appended only once the phrases spoken before the navigation have been
+    // printed, so the boundary lands in the right place.
+    function drainMarker() {
+        if (!markerPending) return;
         append(
-            `· ${window.location.hash || '#/'}`,
+            `· ${markerPending}`,
             `
             margin: 0.5rem 0 0.35rem;
             color: #6f6f85;
             word-break: break-word;
         `,
         );
+        markerPending = null;
+    }
+
+    // Marks where the address changed, so what the reader said before a
+    // navigation can be told apart from what it said after one.
+    //
+    // React commits its re-render after this handler returns, so a drain kicked
+    // off here reads a log that still ends at the previous page. The marker is
+    // printed at the end of that drain, below the phrases it belongs below and
+    // above anything the new page goes on to say.
+    window.addEventListener('hashchange', () => {
+        markerPending = window.location.hash || '#/';
+        drain();
     });
 
     // Deliberately never cleared: the panel lives for as long as the page does.
