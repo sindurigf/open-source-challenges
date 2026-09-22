@@ -143,7 +143,81 @@ check_playwright_tests "@transition" \
   "The gate catches the navigation barrier that the scanner never reported" \
   "The markup is correct at every moment the scanner looks, so it has nothing to report. Move through the shop the way someone who cannot see it would, and judge whether you could still follow where you were."
 
-# 5. Compliance report documenting what was audited -----------------------
+# 5. The announcement is actually usable ----------------------------------
+#
+# The @transition tests are the player's own, so they prove only what the
+# player chose to assert. This drives the repaired app directly.
+#
+# A fixed string passes a naive "something was announced" test and is still
+# broken twice over: it never says where the customer landed, and because the
+# text never changes there is no mutation to announce, so it goes silent from
+# the second navigation onward.
+
+PROBE="${SCRIPT_DIR}/.announcement-probe.mjs"
+
+cat > "${PROBE}" <<'PROBE_EOF'
+import { chromium } from '@playwright/test';
+import {
+    attachScreenReader, startScreenReader,
+    spokenPhrases, clearSpokenPhrases, settle,
+} from './tests/lib/screen-reader.js';
+
+const browser = await chromium.launch();
+const page = await (await browser.newContext()).newPage();
+
+async function arriveAt(selector) {
+    await clearSpokenPhrases(page);
+    await page.click(selector);
+    await settle(page);
+    const said = await spokenPhrases(page);
+    return said.filter((phrase) => /^(polite|assertive):/.test(phrase));
+}
+
+let problems = [];
+try {
+    await attachScreenReader(page);
+    await page.goto('http://127.0.0.1:5173/#/checkout');
+    await startScreenReader(page);
+
+    const payment = await arriveAt('a[href="#/payment"]');
+    const product = await arriveAt('a[href="#/product/running-shoes"]');
+
+    if (payment.length === 0 || product.length === 0) {
+        problems.push('one of two consecutive navigations announced nothing at all');
+    } else if (payment.join('|') === product.join('|')) {
+        problems.push('both destinations announced exactly the same words');
+    }
+    if ([...payment, ...product].some((p) => p.startsWith('assertive:'))) {
+        problems.push('the announcement interrupts rather than waiting its turn');
+    }
+} catch (error) {
+    problems.push(`could not drive the storefront: ${error.message}`);
+} finally {
+    await browser.close();
+}
+
+if (problems.length > 0) {
+    console.error(problems.join('; '));
+    process.exit(1);
+}
+PROBE_EOF
+
+print_test_section "Checking The announcement says where the customer landed..."
+
+if (cd "${SCRIPT_DIR}" && node "${PROBE}" >/dev/null 2>&1); then
+  print_success_indent "The announcement says where the customer landed"
+  TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+  print_error_indent "The announcement says where the customer landed"
+  print_hint "Something is announced, but it does not survive contact with a second navigation. Move between two different pages in a row with ?listen open and read both arrivals: does each one tell you where you are, and does the second one arrive at all?"
+  TESTS_FAILED=$((TESTS_FAILED + 1))
+  FAILED_CHECKS+=("announcement_not_useful")
+fi
+
+rm -f "${PROBE}"
+print_new_line
+
+# 6. Compliance report documenting what was audited -----------------------
 
 print_test_section "Checking compliance report..."
 

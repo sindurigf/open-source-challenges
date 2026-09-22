@@ -192,6 +192,11 @@ how_to_play:
       the test against the outcome rather than any particular repair, and more than one
       approach will satisfy it.
 
+      The repair has to survive being used. Move between two different pages in a row and
+      judge both arrivals: a customer who cannot see the screen has to learn where they
+      have landed each time, without being cut off to hear it. Something that announces
+      once, or announces the same thing everywhere, is not a fix.
+
       For each `@transition` test, use `test.info().annotations.push(...)` to attach a
       `route-announcement` annotation recording which WCAG criterion was satisfied.
       This is what goes into the compliance report.

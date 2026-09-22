@@ -4,3 +4,4 @@ test-results/
 playwright-report/
 compliance-report.json
 .Payment.jsx.orig
+.announcement-probe.mjs
