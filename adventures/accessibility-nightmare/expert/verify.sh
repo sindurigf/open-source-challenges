@@ -209,7 +209,7 @@ if (cd "${SCRIPT_DIR}" && node "${PROBE}" >/dev/null 2>&1); then
   TESTS_PASSED=$((TESTS_PASSED + 1))
 else
   print_error_indent "The announcement says where the customer landed"
-  print_hint "Something is announced, but it does not survive contact with a second navigation. Move between two different pages in a row with ?listen open and read both arrivals: does each one tell you where you are, and does the second one arrive at all?"
+  print_hint "Move between two different pages in a row with ?listen open and read both arrivals. Each one has to tell the customer which page they reached, both have to arrive, and neither should cut the reader off mid-sentence to do it."
   TESTS_FAILED=$((TESTS_FAILED + 1))
   FAILED_CHECKS+=("announcement_not_useful")
 fi
