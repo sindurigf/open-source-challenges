@@ -204,7 +204,15 @@ PROBE_EOF
 
 print_test_section "Checking The announcement says where the customer landed..."
 
-if (cd "${SCRIPT_DIR}" && node "${PROBE}" >/dev/null 2>&1); then
+# Unlike the checks above, this one drives the storefront itself rather than
+# going through playwright.config.js, so nothing starts the server for it. A
+# dead port would otherwise be reported as a fault in the announcement.
+if ! curl --fail --silent --max-time 5 http://127.0.0.1:5173 >/dev/null; then
+  print_error_indent "The announcement says where the customer landed"
+  print_hint "The storefront is not answering on port 5173, so this check could not run. Start it with 'make app' from this directory, then try again."
+  TESTS_FAILED=$((TESTS_FAILED + 1))
+  FAILED_CHECKS+=("announcement_unmeasured_no_server")
+elif (cd "${SCRIPT_DIR}" && node "${PROBE}" >/dev/null 2>&1); then
   print_success_indent "The announcement says where the customer landed"
   TESTS_PASSED=$((TESTS_PASSED + 1))
 else
