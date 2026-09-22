@@ -22,11 +22,11 @@ contributor:
 meta_description: >-
   Debug an accessibility compliance gate that has been green for months while blind users
   cannot navigate the app. Extend scanner coverage, discover what automated tools cannot
-  detect, repair what it misses, and produce a compliance report that stands up to audit.
+  detect, repair what it misses, and produce a report naming what was audited and what it proved.
 
 summary: >-
   Repair the automated check that is meant to stop inaccessible code from shipping, and
-  find out why it has never once caught the navigation barrier the company is being audited over.
+  find out why it never caught the navigation barrier the company is being audited over.
 
 audience: >-
   Frontend developers who are comfortable with Playwright and automated accessibility scanning,
@@ -64,7 +64,7 @@ what_you_learn:
     actually tested. ([WCAG 2.4: Navigable](https://www.w3.org/WAI/WCAG22/Understanding/navigable))
   - >-
     Why automated scanners cannot detect faults that only exist when a user does something —
-    and which tool bridges the gap.
+    and which layer catches them instead.
     ([Test and Evaluate Accessibility](https://www.w3.org/WAI/test-evaluate/))
   - >-
     How a single-page application can silently break the navigation contract that assistive
@@ -104,8 +104,8 @@ toolbox:
   - name: "axe-core"
     url: "https://github.com/dequelabs/axe-core"
     description: >-
-      The automated scanner already in the compliance gate. Fast and structural —
-      it checks what the markup says, not what the browser announces.
+      The automated scanner already in the compliance gate. Structural: it checks what
+      the markup says, not what the browser announces.
   - name: "Playwright Reporter API"
     url: "https://playwright.dev/docs/test-reporters"
     description: >-
@@ -121,6 +121,13 @@ how_to_play:
   - id: browse
     title: "Open the Store"
     content: |
+      The storefront is already running. Open the **Ports** tab in the editor,
+      find **ShopSmart** on port 5173, and click the globe icon to open it in a
+      browser tab. Codespaces serves it from an address ending in
+      `.app.github.dev`, so there is no localhost to visit.
+
+      If it is not running, start it from the level directory with `make app`.
+
       Add the product route to whatever address the Ports tab gave you:
 
       ```text
@@ -180,17 +187,14 @@ how_to_play:
       can find them. The gate should visit every page a customer passes through —
       homepage, product, checkout, and payment.
 
-      When the extended scan still reports nothing wrong, that is the lesson, not a bug.
       axe-core reads the markup. If the markup is correct at every moment it looks, there is
       nothing for it to report — which tells you where to look next, not that you are done.
 
-      Tag your navigation tests `@transition`. A good detector moves between routes the
+      Tag your navigation tests `@transition`. A detector for this moves between routes the
       way a customer would and asserts that the destination made itself known. Assert the
-      outcome, not the mechanism, and the test will survive whichever repair you choose.
+      outcome, not the mechanism.
 
-      Once you have a failing `@transition` test, fix `src/App.jsx` to make it pass. Write
-      the test against the outcome rather than any particular repair, and more than one
-      approach will satisfy it.
+      Once you have a failing `@transition` test, fix `src/App.jsx` to make it pass.
 
       The repair has to survive being used. Move between two different pages in a row and
       judge both arrivals: a customer who cannot see the screen has to learn where they
@@ -203,8 +207,7 @@ how_to_play:
 
       Push the annotation *before* the assertion, not after it. A failed assertion
       ends the test where it stands, so anything recorded after it never reaches the
-      report — and a test that fails without saying what it was checking is the same
-      blind spot you were sent here to close.
+      report.
 
       Finally, add a JSON reporter to `playwright.config.js` so that running
       `npm run test:a11y` writes a `compliance-report.json` file:
@@ -228,7 +231,7 @@ how_to_play:
       one tool it did run was the wrong instrument for what was broken.
 
       Every layer of a testing stack catches something the others miss, and a gate built
-      on one layer reports the absence of the faults it can see. Which layer is missing
+      on one layer can only report the absence of the faults that layer sees. Which layer is missing
       from the gate you rely on at work, and what would it take to add it?
 
 helpful_links:
@@ -241,9 +244,8 @@ helpful_links:
   - title: "How to Meet WCAG 2.2 (Quick Reference)"
     url: "https://www.w3.org/WAI/WCAG22/quickref/"
     description: >-
-      Every success criterion, filterable by level and guideline. Your compliance
-      report has to name the ones your tests actually verify, so this is where you
-      work out which they are.
+      Every success criterion, filterable by level and guideline. Your compliance report has to name the
+      ones your tests actually verify.
   - title: "Guidepup Virtual Screen Reader"
     url: "https://github.com/guidepup/virtual-screen-reader"
     description: >-

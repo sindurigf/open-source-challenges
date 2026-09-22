@@ -401,7 +401,7 @@ footer { padding: 2rem 5vw; color: #4f4f59; text-align: center; }
         <p class="intro">
             Every fault class this storefront can be audited for, which testing layer is
             capable of detecting it, and whether the compliance gate actually verified it on
-            its last run. Read from <code>compliance-report.json</code>.
+            its last run. The final column is read from <code>compliance-report.json</code>.
         </p>
 
         <p class="aside">
@@ -423,7 +423,6 @@ footer { padding: 2rem 5vw; color: #4f4f59; text-align: center; }
             <table>
                 <caption>
                     Fault classes grouped by the testing layer capable of detecting them.
-                    The final column reports what the gate verified on its last run.
                 </caption>
                 <colgroup>
                     <col class="c-check">
@@ -519,7 +518,7 @@ const CHECKS = [
         group: 'Assistive technology output — what the screen reader hears',
         rows: [
             { check: 'Content that changes without a page load is announced', note: 'Anything the user did not type that alters what is on screen', wcag: '4.1.3', axe: 'no', kbd: 'no', sr: 'yes', annotation: 'route-announcement' },
-            { check: 'Status messages use the right politeness', note: 'Polite by default, assertive only when genuinely urgent', wcag: '4.1.3', axe: 'no', kbd: 'no', sr: 'yes', annotation: 'status-politeness' },
+            { check: 'Status messages use the right politeness', note: 'Polite by default, assertive only when genuinely urgent', wcag: '4.1.3', axe: 'no', kbd: 'no', sr: 'yes' },
             { check: 'Form errors are announced on submission', note: 'A live region, or focus moved to an error summary', wcag: '4.1.3', axe: 'partial', kbd: 'no', sr: 'yes' },
             { check: 'Widget state changes are announced', note: 'Dropdowns, dialogs and toggles report their state', wcag: '4.1.2', axe: 'partial', kbd: 'no', sr: 'yes' },
         ],

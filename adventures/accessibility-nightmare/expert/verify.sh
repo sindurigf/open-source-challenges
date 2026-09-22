@@ -141,7 +141,7 @@ fi
 # 4. Route transitions are announced --------------------------------------
 check_playwright_tests "@transition" \
   "The gate catches the navigation barrier that the scanner never reported" \
-  "The markup is correct at every moment the scanner looks, so it has nothing to report. Move through the shop the way someone who cannot see it would, and judge whether you could still follow where you were."
+  "The markup is correct at every moment the scanner looks, so it has nothing to report. Move through the shop the way someone who cannot see it would, and judge whether you could still tell where you had arrived."
 
 # 5. The announcement is actually usable ----------------------------------
 #
@@ -239,7 +239,7 @@ else
     TESTS_PASSED=$((TESTS_PASSED + 1))
   else
     print_error_indent "Compliance report documents the route announcements that were verified"
-    print_hint "The report records that the tests ran, but not what any of them set out to prove. A result with no claim attached is not evidence an auditor can use. Playwright lets a test annotate itself; the gate is looking for the type route-announcement."
+    print_hint "The report records that the tests ran, but not what any of them set out to prove. A result with no claim attached is not evidence an auditor can use."
     TESTS_FAILED=$((TESTS_FAILED + 1))
     FAILED_CHECKS+=("compliance_report_annotation")
   fi
